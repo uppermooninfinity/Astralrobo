@@ -12,6 +12,7 @@ motor==3.4.0
 pymongo==4.5.0
 pillow==10.4.0
 psutil
+pytube==15.0.0
 wget
 qrcode
 future==0.14.0
