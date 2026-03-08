@@ -2,7 +2,7 @@ opencv-python-headless==4.10.0.84
 telethon==1.36.0
 aiofiles
 apscheduler
-aiohttp==3.13.3
+aiohttp==3.10.11
 asyncio==3.4.3
 gTTS
 dnspython==2.6.1
@@ -41,3 +41,4 @@ unidecode
 #git+https://github.com/alexmercerind/youtube-search-python@main
 https://github.com/KurimuzonAkuma/pyrogram/archive/v2.1.23.zip
 bing_image_downloader
+speedtest-cli==2.1.3
