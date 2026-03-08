@@ -12,6 +12,7 @@ motor==3.4.0
 pymongo==4.5.0
 pillow==10.4.0
 psutil
+pytube==15.0.0
 wget
 qrcode
 future==0.14.0
@@ -41,3 +42,4 @@ unidecode
 #git+https://github.com/alexmercerind/youtube-search-python@main
 https://github.com/KurimuzonAkuma/pyrogram/archive/v2.1.23.zip
 bing_image_downloader
+speedtest-cli==2.1.3
