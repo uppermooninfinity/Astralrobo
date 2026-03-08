@@ -15,7 +15,7 @@ POLICE = [
     [
         InlineKeyboardButton(
             text="ᴍʏ ᴄᴜᴛᴇ ᴅᴇᴠᴇʟᴏᴘᴇʀ  🥀",
-            url=f"https://t.me/BRANDED_PAID_CC",
+            url=f"https://t.me/cyber_github",
         ),
     ],
 ]
@@ -105,13 +105,13 @@ async def ctest(_, message):
 
          img.save(f'test_{cid}.png')
     
-         TXT = f"""
+         TXT = f"""<blockquote>
 **ᴛᴏᴅᴀʏ's ᴄᴏᴜᴘʟᴇ ᴏғ ᴛʜᴇ ᴅᴀʏ :
 
-{N1} + {N2} = 💚
+{N1} + {N2} = ☺️💖
 
 ɴᴇxᴛ ᴄᴏᴜᴘʟᴇs ᴡɪʟʟ ʙᴇ sᴇʟᴇᴄᴛᴇᴅ ᴏɴ {tomorrow} !!**
-"""
+</blockquote>"""
     
          await message.reply_photo(f"test_{cid}.png", caption=TXT, reply_markup=InlineKeyboardMarkup(POLICE),
     )
