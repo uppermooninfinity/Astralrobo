@@ -1,18 +1,19 @@
+import config
 from typing import Union
 
 from pyrogram import filters, types
-from pyrogram.types import InlineKeyboardMarkup, Message, InlineKeyboardButton
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 
+from config import BANNED_USERS, SUPPORT_CHAT
 from BrandrdXMusic import app
 from BrandrdXMusic.utils import help_pannel
 from BrandrdXMusic.utils.database import get_lang
 from BrandrdXMusic.utils.decorators.language import LanguageStart, languageCB
 from BrandrdXMusic.utils.inline.help import help_back_markup, private_help_panel
-from config import BANNED_USERS, START_IMG_URL, SUPPORT_CHAT
-from strings import get_string, helpers
 from BrandrdXMusic.utils.stuffs.buttons import BUTTONS
 from BrandrdXMusic.utils.stuffs.helper import Helper
-
+from strings import get_string, helpers
+from pyrogram.types import CallbackQuery
 
 @app.on_message(filters.command(["help"]) & filters.private & ~BANNED_USERS)
 @app.on_callback_query(filters.regex("settings_back_helper") & ~BANNED_USERS)
@@ -40,20 +41,27 @@ async def helper_private(
         language = await get_lang(update.chat.id)
         _ = get_string(language)
         keyboard = help_pannel(_)
-        
+
         await update.reply_video(
-            video="https://graph.org/file/84d30d4fd04570c0e0256.mp4",
-            caption=_["help_1"].format(SUPPORT_CHAT), reply_markup=keyboard)
+            video="https://files.catbox.moe/ix1sik.mp4",
+            caption=_["help_1"].format(SUPPORT_CHAT),
+            reply_markup=keyboard,
+        )
 
 
 @app.on_message(filters.command(["help"]) & filters.group & ~BANNED_USERS)
 @LanguageStart
 async def help_com_group(client, message: Message, _):
     keyboard = private_help_panel(_)
-    await message.reply_video(
-        video="https://te.legra.ph/file/51293513e6af319726fe7.mp4",
-        caption=_["help_2"], reply_markup=InlineKeyboardMarkup(keyboard)
+    await message.reply_photo(
+    photo=config.HELP_IMG_URL,
+    caption=(
+        "❖ ʜᴇʟᴘ ᴍᴀɪɴ ᴍᴇɴᴜ ❖\n\n"
+        "✦ ᴄʜσσsє ᴛʜє ᴄᴧᴛєɢσʀʏ ꜰσʀ ᴡʜɪᴄʜ ʏσᴜ ᴡᴧηηᴧ ɢєᴛ ʜєʟᴘ 🎀✨"
+    ),
+    reply_markup=help_pannel(_)
     )
+
 
 @app.on_callback_query(filters.regex("help_callback") & ~BANNED_USERS)
 @languageCB
@@ -91,14 +99,28 @@ async def helper_cb(client, CallbackQuery, _):
         await CallbackQuery.edit_message_text(helpers.HELP_14, reply_markup=keyboard)
     elif cb == "hb15":
         await CallbackQuery.edit_message_text(helpers.HELP_15, reply_markup=keyboard)
-    
+    elif cb == "hb16":
+        await CallbackQuery.edit_message_text(helpers.HELP_16, reply_markup=keyboard)
+    elif cb == "hb17":
+        await CallbackQuery.edit_message_text(helpers.HELP_17, reply_markup=keyboard)
+    elif cb == "hb18":
+        await CallbackQuery.edit_message_text(helpers.HELP_18, reply_markup=keyboard)
+    elif cb == "hb19":
+        await CallbackQuery.edit_message_text(helpers.HELP_19, reply_markup=keyboard)
+    elif cb == "hb20":
+        await CallbackQuery.edit_message_text(helpers.HELP_20, reply_markup=keyboard)
+    elif cb == "hb21":
+        await CallbackQuery.edit_message_text(helpers.HELP_21, reply_markup=keyboard)
+
 
 @app.on_callback_query(filters.regex("mbot_cb") & ~BANNED_USERS)
 async def helper_cb(client, CallbackQuery):
-    await CallbackQuery.edit_message_text(Helper.HELP_M, reply_markup=InlineKeyboardMarkup(BUTTONS.MBUTTON))
+    await CallbackQuery.edit_message_text(
+        Helper.HELP_M, reply_markup=InlineKeyboardMarkup(BUTTONS.MBUTTON)
+    )
 
 
-@app.on_callback_query(filters.regex('managebot123'))
+@app.on_callback_query(filters.regex("managebot123"))
 async def on_back_button(client, CallbackQuery):
     callback_data = CallbackQuery.data.strip()
     cb = callback_data.split(None, 1)[1]
@@ -108,12 +130,241 @@ async def on_back_button(client, CallbackQuery):
             _["help_1"].format(SUPPORT_CHAT), reply_markup=keyboard
         )
 
-@app.on_callback_query(filters.regex('mplus'))      
+# ==============================
+# MAIN HELP CATEGORY HANDLERS
+# ==============================
+
+@app.on_callback_query(filters.regex("^HELP_MANAGEMENT$") & ~BANNED_USERS)
+async def help_management(client, query: CallbackQuery):
+
+    language = await get_lang(query.message.chat.id)
+    _ = get_string(language)
+
+    keyboard = InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton(_["H_B_1"], callback_data="help_callback hb1"),
+                InlineKeyboardButton(_["H_B_8"], callback_data="help_callback hb8"),
+                InlineKeyboardButton(_["H_B_9"], callback_data="help_callback hb9"),
+            ],
+            [
+                InlineKeyboardButton(_["H_B_18"], callback_data="help_callback hb18"),
+                InlineKeyboardButton(_["H_B_20"], callback_data="help_callback hb20"),
+                InlineKeyboardButton(_["H_B_24"], callback_data="help_callback hb24"),
+            ],
+            [
+                InlineKeyboardButton("Tᴀɢ-Aʟʟ", callback_data="mplus HELP_TagAll"),
+                InlineKeyboardButton("Iɴꜰᴏ", callback_data="mplus HELP_Info"),
+                InlineKeyboardButton("Exᴛʀᴀ", callback_data="mplus HELP_Extra"),
+            ],
+            [
+                InlineKeyboardButton("ғᴏɴᴛ", callback_data="mplus HELP_Font"),
+                InlineKeyboardButton("Bᴏᴛs", callback_data="mplus HELP_Bots"),
+                InlineKeyboardButton("Ⓣ-ɢʀᴀᴘʜ", callback_data="mplus HELP_TG"),
+            ],
+            [
+                InlineKeyboardButton(_["H_B_28"], callback_data="help_callback hb19"),
+            ],
+            [
+                InlineKeyboardButton(_["BACK_BUTTON"], callback_data="back_to_main"),
+            ],
+        ]
+    )
+    
+    await query.message.edit_text(
+        "• ϻᴧηᴧɢєϻєηᴛ •\n\n"
+        "✦ ᴀᴅᴍɪɴ ᴄᴏᴍᴍᴀɴᴅs\n"
+        "✦ ɢʀᴏᴜᴘ ᴍᴀɴᴀɢᴇᴍᴇɴᴛ\n"
+        "✦ ᴍᴏᴅᴇʀᴀᴛɪᴏɴ sʏsᴛᴇᴍ\n\n"
+        "Manage your groups easily with these commands.",
+        reply_markup=keyboard
+    )
+
+
+@app.on_callback_query(filters.regex("^HELP_VIDEOCHAT$") & ~BANNED_USERS)
+async def help_videochat(client, query: CallbackQuery):
+
+    language = await get_lang(query.message.chat.id)
+    _ = get_string(language)
+
+    keyboard = InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton(_["H_B_6"], callback_data="help_callback hb6"),
+                InlineKeyboardButton(_["H_B_11"], callback_data="help_callback hb11"),
+                InlineKeyboardButton(_["H_B_12"], callback_data="help_callback hb12"),
+            ],
+            [
+                InlineKeyboardButton(_["H_B_13"], callback_data="help_callback hb13"),
+                InlineKeyboardButton(_["H_B_14"], callback_data="help_callback hb14"),
+                InlineKeyboardButton(_["H_B_15"], callback_data="help_callback hb15"),
+            ],
+            [
+                InlineKeyboardButton("ᴛᴛs", callback_data="mplus HELP_TTS"),
+                InlineKeyboardButton("Rᴀᴅɪᴏ", callback_data="mplus HELP_Radio"),
+                InlineKeyboardButton("ǫᴜᴏᴛʟʏ", callback_data="mplus HELP_Q"),
+            ],
+            [
+                InlineKeyboardButton(_["BACK_BUTTON"], callback_data="back_to_main")
+            ]
+        ]
+    )
+    
+    await query.message.edit_text(
+        "• ᴠɪᴅєσᴄʜᴧᴛ •\n\n"
+        "✦ ᴘʟᴀʏ ᴍᴜsɪᴄ\n"
+        "✦ ᴠɪᴅᴇᴏ sᴛʀᴇᴀᴍ\n"
+        "✦ ᴠᴄ ᴄᴏɴᴛʀᴏʟ\n\n"
+        "Stream music & video inside voice chats.",
+        reply_markup=keyboard
+    )
+
+
+@app.on_callback_query(filters.regex("^HELP_FUN$") & ~BANNED_USERS)
+async def help_fun(client, query: CallbackQuery):
+
+    language = await get_lang(query.message.chat.id)
+    _ = get_string(language)
+
+    keyboard = InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton(_["H_B_16"], callback_data="help_callback hb16"),
+                InlineKeyboardButton(_["H_B_17"], callback_data="help_callback hb17"),
+                InlineKeyboardButton(_["H_B_22"], callback_data="help_callback hb22"),
+            ],
+            [
+                InlineKeyboardButton(_["H_B_25"], callback_data="help_callback hb16"),
+                InlineKeyboardButton(_["H_B_27"], callback_data="help_callback hb27"),
+                InlineKeyboardButton("ғsᴜʙ", callback_data="help_callback hb20"),
+                InlineKeyboardButton("ғᴜɴ ɢᴀᴍᴇ", callback_data="help_callback hb21"),
+            ],
+            [
+                InlineKeyboardButton("CʜᴀᴛGPT", callback_data="mplus HELP_ChatGPT"),
+                InlineKeyboardButton("Hɪsᴛᴏʀʏ", callback_data="mplus HELP_History"),
+                InlineKeyboardButton("Rᴇᴇʟ", callback_data="mplus HELP_Reel"),
+            ],
+            [
+                InlineKeyboardButton("ᴄᴏᴜᴘʟᴇꜱ", callback_data="mplus HELP_Couples"),
+                InlineKeyboardButton("Aᴄᴛɪᴏɴ", callback_data="mplus HELP_Action"),
+                InlineKeyboardButton("Sᴇᴀʀᴄʜ", callback_data="mplus HELP_Search"),
+            ],
+            [
+                InlineKeyboardButton("Sᴏᴜʀᴄᴇ", callback_data="mplus HELP_Source"),
+                InlineKeyboardButton("Tʀᴜᴛʜ-ᗪᴀʀᴇ", callback_data="mplus HELP_TD"),
+                InlineKeyboardButton("Qᴜɪᴢ", callback_data="mplus HELP_Quiz"),
+            ],
+            [
+                InlineKeyboardButton(_["BACK_BUTTON"], callback_data="back_to_main"),
+            ],
+        ]
+    )
+    
+    await query.message.edit_text(
+        "• ꜰᴜη •\n\n"
+        "✦ ᴇɴᴛᴇʀᴛᴀɪɴᴍᴇɴᴛ ᴄᴏᴍᴍᴀɴᴅs\n"
+        "✦ ɢʀᴏᴜᴘ ғᴜη\n"
+        "✦ ʀᴀɴᴅᴏᴍ ғᴜη ᴛᴏᴏʟs\n\n"
+        "Enjoy fun commands with your friends.",
+        reply_markup=keyboard
+    )
+
+
+@app.on_callback_query(filters.regex("^HELP_SUDOERS$") & ~BANNED_USERS)
+async def help_sudoers(client, query: CallbackQuery):
+
+    language = await get_lang(query.message.chat.id)
+    _ = get_string(language)
+
+    keyboard = InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton(_["H_B_7"], callback_data="help_callback hb7"),
+                InlineKeyboardButton(_["H_B_4"], callback_data="help_callback hb4"),
+            ],
+            [
+                InlineKeyboardButton(_["H_B_3"], callback_data="help_callback hb3"),
+                InlineKeyboardButton(_["H_B_2"], callback_data="help_callback hb2"),
+                InlineKeyboardButton(_["H_B_5"], callback_data="help_callback hb5"),
+            ],
+            [
+                InlineKeyboardButton(_["BACK_BUTTON"], callback_data="back_to_main"),
+            ],
+        ]
+    )
+    await query.message.edit_text(
+        "• ꜱᴜᴅσєʀꜱ •\n\n"
+        "✦ ᴏᴡɴᴇʀ ᴄᴏᴍᴍᴀɴᴅs\n"
+        "✦ ʙᴏᴛ ᴄᴏɴᴛʀᴏʟ\n"
+        "✦ sʏsᴛᴇᴍ ᴍᴀɴᴀɢᴇᴍᴇɴᴛ\n\n"
+        "These commands are restricted to bot sudo users.",
+        reply_markup=keyboard
+    )
+
+
+@app.on_callback_query(filters.regex("^clone_manager$") & ~BANNED_USERS)
+async def help_clone(client, query: CallbackQuery):
+
+    language = await get_lang(query.message.chat.id)
+    _ = get_string(language)
+
+    keyboard = InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton("🤖 ᴄʟᴏɴᴇ ʙᴏᴛ", callback_data="clone_bot")
+            ],
+            [
+                InlineKeyboardButton("📜 sᴇᴇ ᴄʟᴏɴᴇᴅ", callback_data="see_clones")
+            ],
+            [
+                InlineKeyboardButton("❌ ʀᴇᴍᴏᴠᴇ ᴄʟᴏɴᴇ", callback_data="remove_clone")
+            ],
+            [
+                InlineKeyboardButton("🔙 ʙᴀᴄᴋ", callback_data="back_to_main")
+            ],
+        ]
+    )
+    await query.message.edit_text(
+        "• ᴄʟᴏɴᴇ ϻᴧηᴧɢєϻєηᴛ •\n\n"
+        "✦ ᴄʀᴇᴀᴛᴇ ʙᴏᴛ ᴄʟᴏɴᴇ\n"
+        "✦ sᴇᴇ ᴄʟᴏɴᴇᴅ ʙᴏᴛs\n"
+        "✦ ʀᴇᴍᴏᴠᴇ ᴄʟᴏɴᴇ\n\n"
+        "Commands:\n"
+        "`/clone BOT_TOKEN`\n"
+        "`/mybots`\n"
+        "`/rmclone BOT_ID`",
+        reply_markup=keyboard
+    )
+
+
+
+@app.on_callback_query(filters.regex("^back_to_main$") & ~BANNED_USERS)
+async def back_to_main_handler(client, query: CallbackQuery):
+
+    language = await get_lang(query.message.chat.id)
+    _ = get_string(language)
+
+    keyboard = help_back_markup(_)
+
+    await query.message.edit_text(
+        "Choose the category for which you wanna get help",
+        reply_markup=help_pannel(_),
+    )
+    
+@app.on_callback_query(filters.regex("mplus"))
 async def mb_plugin_button(client, CallbackQuery):
     callback_data = CallbackQuery.data.strip()
     cb = callback_data.split(None, 1)[1]
-    keyboard = InlineKeyboardMarkup([[InlineKeyboardButton("ʙᴀᴄᴋ", callback_data=f"mbot_cb")]])
+    keyboard = InlineKeyboardMarkup(
+        [[InlineKeyboardButton("ʙᴀᴄᴋ", callback_data=f"mbot_cb")]]
+    )
     if cb == "Okieeeeee":
-        await CallbackQuery.edit_message_text(f"`something errors`",reply_markup=keyboard,parse_mode=enums.ParseMode.MARKDOWN)
+        await CallbackQuery.edit_message_text(
+            f"`something errors`",
+            reply_markup=keyboard,
+            parse_mode=enums.ParseMode.MARKDOWN,
+        )
     else:
-        await CallbackQuery.edit_message_text(getattr(Helper, cb), reply_markup=keyboard)
+        await CallbackQuery.edit_message_text(
+            getattr(Helper, cb), reply_markup=keyboard
+        )
