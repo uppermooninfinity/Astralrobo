@@ -34,8 +34,24 @@ from BrandrdXMusic.utils.stream.autoclear import auto_clean
 from BrandrdXMusic.utils.thumbnails import get_thumb
 from BrandrdXMusic.utils.errors import capture_internal_err
 
+
+async def delete_old_message(chat_id: int):
+    try:
+        old = db.get(chat_id, [{}])[0].get("mystic")
+        if old:
+            await old.delete()
+    except:
+        pass
+
+
 autoend = {}
 counter = {}
+
+
+async def _clear_(chat_id: int):
+    db[chat_id] = []
+    await remove_active_video_chat(chat_id)
+    await remove_active_chat(chat_id)
 
 def dynamic_media_stream(path: str, video: bool = False, ffmpeg_params: str = None) -> MediaStream:
     if video:
@@ -98,26 +114,31 @@ class Call:
     @capture_internal_err
     async def pause_stream(self, chat_id: int) -> None:
         assistant = await group_assistant(self, chat_id)
+        await delete_old_message(chat_id)
         await assistant.pause(chat_id)
 
     @capture_internal_err
     async def resume_stream(self, chat_id: int) -> None:
         assistant = await group_assistant(self, chat_id)
+        await delete_old_message(chat_id)
         await assistant.resume(chat_id)
 
     @capture_internal_err
     async def mute_stream(self, chat_id: int) -> None:
         assistant = await group_assistant(self, chat_id)
+        await delete_old_message(chat_id)
         await assistant.mute(chat_id)
 
     @capture_internal_err
     async def unmute_stream(self, chat_id: int) -> None:
         assistant = await group_assistant(self, chat_id)
+        await delete_old_message(chat_id)
         await assistant.unmute(chat_id)
 
     @capture_internal_err
     async def stop_stream(self, chat_id: int) -> None:
         assistant = await group_assistant(self, chat_id)
+        await delete_old_message(chat_id)
         await _clear_(chat_id)
         if chat_id not in self.active_calls:
             return
@@ -131,6 +152,7 @@ class Call:
 
     @capture_internal_err
     async def force_stop_stream(self, chat_id: int) -> None:
+        await delete_old_message(chat_id)
         assistant = await group_assistant(self, chat_id)
         try:
             check = db.get(chat_id)
@@ -154,6 +176,7 @@ class Call:
     @capture_internal_err
     async def skip_stream(self, chat_id: int, link: str, video: Union[bool, str] = None, image: Union[bool, str] = None) -> None:
         assistant = await group_assistant(self, chat_id)
+        await delete_old_message(chat_id)
         stream = dynamic_media_stream(path=link, video=bool(video))
         await assistant.play(chat_id, stream)
 
